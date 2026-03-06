@@ -2,8 +2,8 @@
    LinkChat Extension — popup.js  (patched)
    ============================================= */
 
-const API = "http://localhost:5000/api";
-const SOCKET_URL = "http://localhost:5000";
+const API = "https://linkchat-qcp5.onrender.com/api";
+const SOCKET_URL = "https://linkchat-qcp5.onrender.com";
 
 let socket = null;
 let currentUser = null;
