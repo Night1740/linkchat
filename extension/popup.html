@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LinkChat</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ===== AUTH SCREEN ===== -->
+<div id="auth-screen" class="screen active">
+  <div class="auth-header">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="14" fill="#6C63FF"/>
+        <path d="M7 10h14M7 14h10M7 18h7" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>LinkChat</span>
+    </div>
+    <p class="auth-tagline">Chat. Share. Collaborate.</p>
+  </div>
+
+  <div class="auth-tabs">
+    <button class="auth-tab active" data-tab="login">Login</button>
+    <button class="auth-tab" data-tab="register">Register</button>
+  </div>
+
+  <!-- Login Form -->
+  <div id="login-form" class="auth-form active">
+    <div class="field-group">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="you@example.com" />
+    </div>
+    <div class="field-group">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="••••••••" />
+    </div>
+    <div id="login-error" class="error-msg hidden"></div>
+    <button id="login-btn" class="btn btn-primary">Login</button>
+  </div>
+
+  <!-- Register Form -->
+  <div id="register-form" class="auth-form">
+    <div class="field-group">
+      <label>Username</label>
+      <input type="text" id="reg-username" placeholder="cooluser" />
+    </div>
+    <div class="field-group">
+      <label>Email</label>
+      <input type="email" id="reg-email" placeholder="you@example.com" />
+    </div>
+    <div class="field-group">
+      <label>Password</label>
+      <input type="password" id="reg-password" placeholder="Min 6 characters" />
+    </div>
+    <div id="register-error" class="error-msg hidden"></div>
+    <button id="register-btn" class="btn btn-primary">Create Account</button>
+  </div>
+</div>
+
+<!-- ===== MAIN APP SCREEN ===== -->
+<div id="app-screen" class="screen">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="14" fill="#6C63FF"/>
+        <path d="M7 10h14M7 14h10M7 18h7" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span class="topbar-title">LinkChat</span>
+    </div>
+    <div class="topbar-right">
+      <span id="current-user-label" class="user-label"></span>
+      <button id="logout-btn" class="btn-icon" title="Logout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <!-- Sidebar: Groups -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <span>Groups</span>
+        <div class="sidebar-actions">
+          <button id="create-group-btn" class="btn-icon" title="Create Group">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </button>
+          <button id="join-group-btn" class="btn-icon" title="Join Group">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div id="groups-list" class="groups-list">
+        <div class="empty-groups">No groups yet.<br/>Create or join one!</div>
+      </div>
+    </div>
+
+    <!-- Main Panel -->
+    <div class="main-panel">
+
+      <!-- No group selected state -->
+      <div id="no-group-selected" class="no-group">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <p>Select a group to start chatting</p>
+      </div>
+
+      <!-- Group content -->
+      <div id="group-content" class="hidden">
+
+        <!-- Group header -->
+        <div class="group-header">
+          <div>
+            <div id="group-name-display" class="group-name"></div>
+            <div id="group-code-display" class="group-code"></div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab active" data-tab="chat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Chat
+          </button>
+          <button class="tab" data-tab="resources">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            Resources
+          </button>
+        </div>
+
+        <!-- Chat Tab -->
+        <div id="tab-chat" class="tab-panel active">
+          <div id="messages-container" class="messages-container">
+            <div class="loading-msgs">Loading messages...</div>
+          </div>
+          <div class="message-input-area">
+            <input type="text" id="message-input" placeholder="Type a message..." maxlength="2000"/>
+            <button id="send-btn" class="btn-send">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Resources Tab -->
+        <div id="tab-resources" class="tab-panel">
+          <div class="add-link-form">
+            <input type="text" id="link-title" placeholder="Title *" />
+            <input type="url" id="link-url" placeholder="https://..." />
+            <input type="text" id="link-desc" placeholder="Description (optional)" />
+            <input type="text" id="link-tags" placeholder="Tags: comma, separated" />
+            <div id="link-error" class="error-msg hidden"></div>
+            <button id="add-link-btn" class="btn btn-primary btn-sm">+ Add Resource</button>
+          </div>
+          <div id="links-container" class="links-container">
+            <div class="loading-msgs">Loading resources...</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<div id="modal-overlay" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="modal-title">Modal</span>
+      <button id="modal-close" class="btn-icon">✕</button>
+    </div>
+    <div id="modal-body" class="modal-body"></div>
+  </div>
+</div>
+
+<script src="vendor/socket.io.min.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>
